@@ -1,4 +1,4 @@
-# Implementação de Listas Ligadas e Algoritmos de Ordenação
+# Listas Ligadas e Algoritmos de Ordenação
 
 ## Visão Geral
 Este projeto implementa uma estrutura de dados de lista duplamente ligada com vários algoritmos de ordenação em Java. A implementação inclui operações fundamentais de lista e múltiplas técnicas de ordenação para fins educacionais.
