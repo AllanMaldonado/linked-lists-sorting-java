@@ -152,25 +152,7 @@ public class Lista {
             }
             vet[pos] = aux;
         }
-    }
-
-    public void selecaoDireta() {
-        int TL = 10, menor, posMenor;
-        int[] vet = new int[TL];
-
-        for (int i = 0; i < TL - 1; i++) {
-            menor = vet[i];
-            posMenor = i;
-            for (int j = i; j < TL - 1; j++) {
-                if (vet[j] < menor) {
-                    menor = vet[j];
-                    posMenor = j;
-                }
-            }
-            vet[posMenor] = vet[i];
-            vet[i] = posMenor;
-        }
-    }
+    } 
 
     public void bolha() {
         int TL = 10, TL2 = TL, aux;
@@ -282,30 +264,52 @@ public class Lista {
         quickSP(inicio, fim);
     }
 
+    public void selecaoDireta() {
+        No pMenor, pi = inicio, pj;
+        int aux;
+
+        while (pi != null) {
+            pMenor = pi;
+
+            pj = pi.getProx();
+            while (pj != null) {
+                if (pj.getInfo() < pMenor.getInfo())
+                    pMenor = pj;
+                pj = pj.getProx();
+            }
+
+            aux = pMenor.getInfo();
+            pMenor.setInfo(pi.getInfo());
+            pi.setInfo(aux);
+
+            pi = pi.getProx();
+        }
+    }
+
     public void quickSP(No inicio, No fim) {
-        No i = inicio, j = fim;
+        No pi = inicio, pj = fim;
         int aux;
         boolean flag = true;
 
-        while (i != j) {
+        while (pi != pj) {
             if (flag) {
-                while (i != j && i.getInfo() <= j.getInfo())
-                    i = i.getProx();
+                while (pi != pj && pi.getInfo() <= pj.getInfo())
+                    pi = pi.getProx();
             } else {
-                while (i != j && i.getInfo() >= j.getInfo())
-                    j = j.getAnt();
+                while (pi != pj && pi.getInfo() >= pj.getInfo())
+                    pj = pj.getAnt();
             }
 
-            aux = i.getInfo();
-            i.setInfo(j.getInfo());
-            j.setInfo(aux);
+            aux = pi.getInfo();
+            pi.setInfo(pj.getInfo());
+            pj.setInfo(aux);
             flag = !flag;
         }
 
-        if (inicio != i && i.getAnt() != null)
-            quickSP(inicio, i.getAnt());
-        if (j != fim && j.getProx() != null)
-            quickSP(j.getProx(), fim);
+        if (inicio != pi && pi.getAnt() != null)
+            quickSP(inicio, pi.getAnt());
+        if (pj != fim && pj.getProx() != null)
+            quickSP(pj.getProx(), fim);
     }
 
 }
