@@ -115,6 +115,114 @@ public class Lista {
         return null;
     }
 
+    public void selecaoDireta() {
+        No pMenor, pi = inicio, pj;
+        int aux;
+
+        while (pi != null) {
+            pMenor = pi;
+
+            pj = pi.getProx();
+            while (pj != null) {
+                if (pj.getInfo() < pMenor.getInfo())
+                    pMenor = pj;
+                pj = pj.getProx();
+            }
+
+            aux = pMenor.getInfo();
+            pMenor.setInfo(pi.getInfo());
+            pi.setInfo(aux);
+
+            pi = pi.getProx();
+        }
+    }
+
+    public void bolha() {
+        No TL = fim, pi;
+        int aux;
+        boolean troca = true;
+
+        while (TL != null && troca) {
+            troca = false;
+
+            pi = inicio;
+            while (pi != TL && pi.getProx() != null) {
+                if (pi.getInfo() > pi.getProx().getInfo()) {
+                    aux = pi.getInfo();
+                    pi.setInfo(pi.getProx().getInfo());
+                    pi.getProx().setInfo(aux);
+                    troca = true;
+                }
+                pi = pi.getProx();
+            }
+            TL = TL.getAnt();
+        }
+    }
+
+    public void shake() {
+        int aux;
+        boolean troca = true;
+        No pIni = inicio, pFim = fim, pi;
+
+        while (pIni != pFim && pIni.getProx() != pFim && troca) {
+            troca = false;
+
+            pi = pIni;
+            while (pi != pFim && pi.getProx() != null) {
+                if (pi.getInfo() > pi.getProx().getInfo()) {
+                    aux = pi.getInfo();
+                    pi.setInfo(pi.getProx().getInfo());
+                    pi.getProx().setInfo(aux);
+                    troca = true;
+                }
+                pi = pi.getProx();
+            }
+            pFim = pFim.getAnt();
+
+            pi = pFim;
+            while (pi != pIni && pi.getAnt() != null) {
+                if (pi.getInfo() < pi.getAnt().getInfo()) {
+                    aux = pi.getInfo();
+                    pi.setInfo(pi.getAnt().getInfo());
+                    pi.getAnt().setInfo(aux);
+                    troca = true;
+                }
+                pi = pi.getAnt();
+            }
+            pIni = pIni.getProx();
+        }
+    }
+
+    public void quickSemPivo() {
+        quickSP(inicio, fim);
+    }
+
+    public void quickSP(No inicio, No fim) {
+        No pi = inicio, pj = fim;
+        int aux;
+        boolean flag = true;
+
+        while (pi != pj) {
+            if (flag) {
+                while (pi != pj && pi.getInfo() <= pj.getInfo())
+                    pi = pi.getProx();
+            } else {
+                while (pi != pj && pi.getInfo() >= pj.getInfo())
+                    pj = pj.getAnt();
+            }
+
+            aux = pi.getInfo();
+            pi.setInfo(pj.getInfo());
+            pj.setInfo(aux);
+            flag = !flag;
+        }
+
+        if (inicio != pi && pi.getAnt() != null)
+            quickSP(inicio, pi.getAnt());
+        if (pj != fim && pj.getProx() != null)
+            quickSP(pj.getProx(), fim);
+    }
+
     // # transformar em lista |-------------------------------------|
 
     public int buscaBinVet(int info, int position) {
@@ -152,83 +260,8 @@ public class Lista {
             }
             vet[pos] = aux;
         }
-    }
-
-    public void selecaoDireta() {
-        int TL = 10, menor, posMenor;
-        int[] vet = new int[TL];
-
-        for (int i = 0; i < TL - 1; i++) {
-            menor = vet[i];
-            posMenor = i;
-            for (int j = i; j < TL - 1; j++) {
-                if (vet[j] < menor) {
-                    menor = vet[j];
-                    posMenor = j;
-                }
-            }
-            vet[posMenor] = vet[i];
-            vet[i] = posMenor;
-        }
-    }
-
-    public void bolha() {
-        int TL = 10, TL2 = TL, aux;
-        boolean troca = true;
-        int[] vet = new int[TL];
-
-        while (TL2 > 1 && troca) {
-            troca = false;
-
-            for (int i = 0; i < TL2; i++) {
-                if (vet[i] > vet[i + 1]) {
-                    aux = vet[i];
-                    vet[i] = vet[i + 1];
-                    vet[i + 1] = aux;
-                    troca = true;
-                }
-            }
-            TL2--;
-        }
-    }
-
-    public void shake() {
-        int TL = 10, inicio = 0, fim = TL - 1, aux;
-        int[] vet = new int[TL];
-        boolean troca = true;
-
-        for (int i = 0; i < TL; i++) {
-            vet[i] = (int) (Math.random() * 100);
-        }
-
-        while (inicio < fim && troca) {
-            troca = false;
-
-            for (int i = inicio; i < fim; i++) {
-                if (vet[i] > vet[i + 1]) {
-                    aux = vet[i];
-                    vet[i] = vet[i + 1];
-                    vet[i + 1] = aux;
-                    troca = true;
-                }
-            }
-            fim--;
-
-            if (!troca)
-                break;
-
-            for (int i = fim; i > inicio; i--) {
-                if (vet[i] < vet[i - 1]) {
-                    aux = vet[i];
-                    vet[i] = vet[i - 1];
-                    vet[i - 1] = aux;
-                    troca = true;
-                }
-            }
-            inicio++;
-        }
-    }
-
+    }  
+  
     public void heap() {
         int TL = 10, TL2 = TL - 1;
         int FE, FD, maiorF, aux;
@@ -277,37 +310,4 @@ public class Lista {
             dist = dist / 3;
         }
     }
-
-    public void QuickSemPivo() {
-        int TL1 = 10;
-        quickSP(0, TL1);
-    }
-
-    public void quickSP(int ini, int fim) {
-        int i = ini, j = fim, aux;
-        int[] vet = new int[10];
-        boolean flag = true;
-
-        while (i < j) {
-            if (flag) {
-                while (i < j && vet[i] <= vet[j])
-                    i++;
-            } else {
-                while (i < j && vet[i] >= vet[j])
-                    j--;
-            }
-
-            aux = vet[i];
-            vet[i] = vet[j];
-            vet[j] = aux;
-
-            flag = !flag;
-        }
-
-        if (ini < i - 1)
-            quickSP(ini, i - 1);
-        if (j + 1 < fim)
-            quickSP(j + 1, fim);
-    }
-
 }
