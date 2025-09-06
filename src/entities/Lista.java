@@ -159,6 +159,40 @@ public class Lista {
         }
     }
 
+    public void shake() {
+        int aux;
+        boolean troca = true;
+        No pIni = inicio, pFim = fim, pi;
+
+        while (pIni != pFim && pIni.getProx() != pFim && troca) {
+            troca = false;
+
+            pi = pIni;
+            while (pi != pFim && pi.getProx() != null) {
+                if (pi.getInfo() > pi.getProx().getInfo()) {
+                    aux = pi.getInfo();
+                    pi.setInfo(pi.getProx().getInfo());
+                    pi.getProx().setInfo(aux);
+                    troca = true;
+                }
+                pi = pi.getProx();
+            }
+            pFim = pFim.getAnt();
+
+            pi = pFim;
+            while (pi != pIni && pi.getAnt() != null) {
+                if (pi.getInfo() < pi.getAnt().getInfo()) {
+                    aux = pi.getInfo();
+                    pi.setInfo(pi.getAnt().getInfo());
+                    pi.getAnt().setInfo(aux);
+                    troca = true;
+                }
+                pi = pi.getAnt();
+            }
+            pIni = pIni.getProx();
+        }
+    }
+
     public void quickSemPivo() {
         quickSP(inicio, fim);
     }
@@ -227,44 +261,7 @@ public class Lista {
             vet[pos] = aux;
         }
     }  
-
-    public void shake() {
-        int TL = 10, inicio = 0, fim = TL - 1, aux;
-        int[] vet = new int[TL];
-        boolean troca = true;
-
-        for (int i = 0; i < TL; i++) {
-            vet[i] = (int) (Math.random() * 100);
-        }
-
-        while (inicio < fim && troca) {
-            troca = false;
-
-            for (int i = inicio; i < fim; i++) {
-                if (vet[i] > vet[i + 1]) {
-                    aux = vet[i];
-                    vet[i] = vet[i + 1];
-                    vet[i + 1] = aux;
-                    troca = true;
-                }
-            }
-            fim--;
-
-            if (!troca)
-                break;
-
-            for (int i = fim; i > inicio; i--) {
-                if (vet[i] < vet[i - 1]) {
-                    aux = vet[i];
-                    vet[i] = vet[i - 1];
-                    vet[i - 1] = aux;
-                    troca = true;
-                }
-            }
-            inicio++;
-        }
-    }
-
+  
     public void heap() {
         int TL = 10, TL2 = TL - 1;
         int FE, FD, maiorF, aux;
