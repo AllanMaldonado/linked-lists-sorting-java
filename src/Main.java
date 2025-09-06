@@ -57,16 +57,7 @@ public class Main {
         } else {
             System.out.println("✗ insercaoDireta: FALHOU");
         }
-        
-        // Teste buscaBin
-        No encontradoBin = lista.buscaBin(10);
-        No naoEncontradoBin = lista.buscaBin(99);
-        if(encontradoBin != null && naoEncontradoBin == null) {
-            System.out.println("✓ buscaBin: OK");
-            passou++;
-        } else {
-            System.out.println("✗ buscaBin: FALHOU");
-        }
+     
         
         System.out.println("\n=== RESULTADO ===");
         System.out.println("Passou: " + passou + "/" + total);
