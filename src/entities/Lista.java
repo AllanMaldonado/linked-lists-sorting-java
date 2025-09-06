@@ -279,35 +279,33 @@ public class Lista {
     }
 
     public void QuickSemPivo() {
-        int TL1 = 10;
-        quickSP(0, TL1);
+        quickSP(inicio, fim);
     }
 
-    public void quickSP(int ini, int fim) {
-        int i = ini, j = fim, aux;
-        int[] vet = new int[10];
+    public void quickSP(No inicio, No fim) {
+        No i = inicio, j = fim;
+        int aux;
         boolean flag = true;
 
-        while (i < j) {
+        while (i != j) {
             if (flag) {
-                while (i < j && vet[i] <= vet[j])
-                    i++;
+                while (i != j && i.getInfo() <= j.getInfo())
+                    i = i.getProx();
             } else {
-                while (i < j && vet[i] >= vet[j])
-                    j--;
+                while (i != j && i.getInfo() >= j.getInfo())
+                    j = j.getAnt();
             }
 
-            aux = vet[i];
-            vet[i] = vet[j];
-            vet[j] = aux;
-
+            aux = i.getInfo();
+            i.setInfo(j.getInfo());
+            j.setInfo(aux);
             flag = !flag;
         }
 
-        if (ini < i - 1)
-            quickSP(ini, i - 1);
-        if (j + 1 < fim)
-            quickSP(j + 1, fim);
+        if (inicio != i && i.getAnt() != null)
+            quickSP(inicio, i.getAnt());
+        if (j != fim && j.getProx() != null)
+            quickSP(j.getProx(), fim);
     }
 
 }
