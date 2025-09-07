@@ -97,7 +97,7 @@ public class Lista {
         return auxIni;
     }
 
-    public No buscaBin(int info, No fim) {
+    public No buscaBin(int info) {
         No auxIni = inicio, auxFim = fim, meio;
 
         meio = getMeio(auxIni, auxFim);
@@ -112,7 +112,28 @@ public class Lista {
 
         if (meio != null && info == meio.getInfo())
             return meio;
-        return null;
+        return auxIni;
+    }
+
+    public void insercaoBin() {
+        int aux;
+
+        No pi = inicio.getProx(), pos, pj, piProx;
+        while (pi != null) {
+            piProx = pi.getProx(); 
+
+            aux = pi.getInfo();
+            pos = buscaBin(aux);
+
+            pj = pi;
+            while (pj != pos && pj.getInfo() < pos.getInfo()) {
+                pj.setInfo(pj.getAnt().getInfo());
+                pj = pj.getAnt();
+            }
+            pj.setInfo(aux);
+
+            pi = piProx;  
+        }
     }
 
     public void selecaoDireta() {
@@ -225,43 +246,6 @@ public class Lista {
 
     // # transformar em lista |-------------------------------------|
 
-    public int buscaBinVet(int info, int position) {
-        int TL = 10;
-        int[] vet = new int[TL];
-
-        int ini = 0, fim = TL - 1, meio = fim / 2;
-
-        while (ini < fim && info > vet[meio]) {
-            if (info < vet[meio]) {
-                fim = meio - 1;
-            } else {
-                ini = meio + 1;
-            }
-            meio = (ini + fim) / 2;
-        }
-
-        if (info == vet[meio])
-            return meio;
-        return -1;
-    }
-
-    public void insercaoBinaria() {
-        int TL = 10;
-        int[] vet = new int[TL];
-
-        int aux, pos;
-
-        for (int i = 1; i < TL; i++) {
-            aux = vet[i];
-            pos = buscaBinVet(aux, i);
-
-            for (int j = i; j < pos; j--) {
-                vet[j] = vet[j - 1];
-            }
-            vet[pos] = aux;
-        }
-    }  
-  
     public void heap() {
         int TL = 10, TL2 = TL - 1;
         int FE, FD, maiorF, aux;
