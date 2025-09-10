@@ -90,29 +90,62 @@ public class Lista {
     }
 
     public No getMeio(No auxIni, No auxFim) {
-        while (auxIni != auxFim && auxIni.getProx() != auxFim) {
+        while (auxIni != null && auxFim != null && auxIni != auxFim && auxIni.getProx() != auxFim) {
             auxIni = auxIni.getProx();
             auxFim = auxFim.getAnt();
         }
         return auxIni;
     }
 
-    public No buscaBin(int info, No fim) {
+    public No buscaBin(int info) {
         No auxIni = inicio, auxFim = fim, meio;
 
-        meio = getMeio(auxIni, auxFim);
-        while (auxIni != auxFim && meio != null && info != meio.getInfo()) {
-            if (info < meio.getInfo()) {
-                auxFim = meio.getAnt();
-            } else {
-                auxIni = meio.getProx();
-            }
+        while (auxIni != null && auxFim != null && auxIni != auxFim && auxIni.getProx() != auxFim) {
             meio = getMeio(auxIni, auxFim);
+            if (info == meio.getInfo())
+                return meio;
+            else if (info < meio.getInfo())
+                auxFim = meio.getAnt();
+            else
+                auxIni = meio.getProx();
         }
 
-        if (meio != null && info == meio.getInfo())
-            return meio;
-        return null;
+        // Retorna o nó onde o valor deve ser inserido
+        if (auxIni != null && auxIni.getInfo() >= info)
+            return auxIni;
+        if (auxFim != null && auxFim.getInfo() >= info)
+            return auxFim;
+        return null; // insere no final
+    }
+
+    public void insercaoBin() {
+        if (inicio == null)
+            return;
+
+        int aux;
+        No pi = inicio.getProx(), pj, piProx, pos;
+
+        while (pi != null) {
+            piProx = pi.getProx();
+            aux = pi.getInfo();
+
+            // Busca apenas na sublista ordenada (do início até pi.getAnt())
+            pos = inicio;
+            while (pos != pi && pos.getInfo() < aux) {
+                pos = pos.getProx();
+            }
+
+            // Desloca os elementos para abrir espaço
+            pj = pi;
+            while (pj != pos) {
+                pj.setInfo(pj.getAnt().getInfo());
+                pj = pj.getAnt();
+            }
+
+            pj.setInfo(aux);
+
+            pi = piProx;
+        }
     }
 
     public void selecaoDireta() {
@@ -198,70 +231,74 @@ public class Lista {
     }
 
     public void quickSP(No inicio, No fim) {
-        No pi = inicio, pj = fim;
+        No pi = inicio;
+        No pj = fim;
         int aux;
-        boolean flag = true;
 
         while (pi != pj) {
-            if (flag) {
-                while (pi != pj && pi.getInfo() <= pj.getInfo())
-                    pi = pi.getProx();
+            while (pi != pj && pi.getInfo() <= pj.getInfo()) {
+                pi = pi.getProx();
+            }
+            while (pi != pj && pj.getInfo() >= pi.getInfo()) {
+                pj = pj.getAnt();
+            }
+
+            if (pi != pj) {
+                aux = pi.getInfo();
+                pi.setInfo(pj.getInfo());
+                pj.setInfo(aux);
+            }
+        }
+
+        if (inicio != pi && pi.getAnt() != null) {
+            quickSP(inicio, pi.getAnt());
+        }
+        if (pi != fim && pi.getProx() != null) {
+            quickSP(pi.getProx(), fim);
+        }
+    }
+
+    public void quickComPivo() {
+        quickCP(inicio, fim);
+    }
+
+    private void quickCP(No inicio, No fim) {
+        if (inicio == null || fim == null || inicio == fim)
+            return;
+
+        int aux;
+        No pivo = getMeio(inicio, fim);
+        No pi = inicio, pj = fim;
+
+        while (pi != null && pj != null && pi != pj && pi.getAnt() != pj) {
+
+            while (pi != pj && pi.getInfo() < pivo.getInfo())
+                pi = pi.getProx();
+
+            while (pi != pj && pj.getInfo() > pivo.getInfo())
+                pj = pj.getAnt();
+
+            if (pi != pj && pi.getInfo() > pj.getInfo()) {
+                aux = pi.getInfo();
+                pi.setInfo(pj.getInfo());
+                pj.setInfo(aux);
             } else {
-                while (pi != pj && pi.getInfo() >= pj.getInfo())
+                if (pi != pj)
+                    pi = pi.getProx();
+                if (pi != pj)
                     pj = pj.getAnt();
             }
 
-            aux = pi.getInfo();
-            pi.setInfo(pj.getInfo());
-            pj.setInfo(aux);
-            flag = !flag;
         }
 
-        if (inicio != pi && pi.getAnt() != null)
-            quickSP(inicio, pi.getAnt());
-        if (pj != fim && pj.getProx() != null)
-            quickSP(pj.getProx(), fim);
+        if (inicio != pj && inicio != pj.getProx())
+            quickCP(inicio, pj);
+        if (pi != fim && pi != fim.getAnt())
+            quickCP(pi, fim);
     }
 
     // # transformar em lista |-------------------------------------|
 
-    public int buscaBinVet(int info, int position) {
-        int TL = 10;
-        int[] vet = new int[TL];
-
-        int ini = 0, fim = TL - 1, meio = fim / 2;
-
-        while (ini < fim && info > vet[meio]) {
-            if (info < vet[meio]) {
-                fim = meio - 1;
-            } else {
-                ini = meio + 1;
-            }
-            meio = (ini + fim) / 2;
-        }
-
-        if (info == vet[meio])
-            return meio;
-        return -1;
-    }
-
-    public void insercaoBinaria() {
-        int TL = 10;
-        int[] vet = new int[TL];
-
-        int aux, pos;
-
-        for (int i = 1; i < TL; i++) {
-            aux = vet[i];
-            pos = buscaBinVet(aux, i);
-
-            for (int j = i; j < pos; j--) {
-                vet[j] = vet[j - 1];
-            }
-            vet[pos] = aux;
-        }
-    }  
-  
     public void heap() {
         int TL = 10, TL2 = TL - 1;
         int FE, FD, maiorF, aux;
@@ -309,5 +346,54 @@ public class Lista {
 
             dist = dist / 3;
         }
+    }
+
+    // Métodos auxiliares para testes
+    public void limpar() {
+        inicio = fim = null;
+    }
+
+    public void popularComDados(int[] dados) {
+        limpar();
+        for (int valor : dados) {
+            inserirNoFinal(valor);
+        }
+    }
+
+    public boolean estaOrdenada() {
+        if (inicio == null)
+            return true;
+
+        No atual = inicio;
+        while (atual.getProx() != null) {
+            if (atual.getInfo() > atual.getProx().getInfo()) {
+                return false;
+            }
+            atual = atual.getProx();
+        }
+        return true;
+    }
+
+    public void exibirEmLinha() {
+        No aux = inicio;
+        System.out.print("[");
+        while (aux != null) {
+            System.out.print(aux.getInfo());
+            if (aux.getProx() != null) {
+                System.out.print(", ");
+            }
+            aux = aux.getProx();
+        }
+        System.out.println("]");
+    }
+
+    public int tamanho() {
+        int count = 0;
+        No aux = inicio;
+        while (aux != null) {
+            count++;
+            aux = aux.getProx();
+        }
+        return count;
     }
 }
