@@ -299,49 +299,87 @@ public class Lista {
 
     // # transformar em lista |-------------------------------------|
 
+    public int tamanho() {
+        No atual = inicio;
+        int tam = 0;
+
+        while (atual != null) {
+            tam++;
+            atual = atual.getProx();
+        }
+        return tam;
+    }
+
+    private No buscaPos(int pos) {
+        No atual = inicio;
+        int posAtual = 0;
+
+        while (posAtual < pos && atual != null) {
+            atual = atual.getProx();
+            posAtual++;
+        }
+        return atual;
+    }
+
     public void heap() {
-        int TL = 10, TL2 = TL - 1;
-        int FE, FD, maiorF, aux;
-        int[] vet = new int[TL];
-        while (TL2 > 1) {
-            for (int pai = TL2 / 2 - 1; pai >= 0; pai--) {
-                FE = 2 * pai + 1;
-                FD = FE + 1;
+        int posPai, posFE, posFD, aux, TL = tamanho();
+        No pai, FE, FD, maiorF;
+
+        while (TL > 1) {
+            for (posPai = TL / 2 - 1; posPai >= 0; posPai--) {
+                pai = buscaPos(posPai);
+                posFE = 2 * posPai + 1;
+                posFD = posFE + 1;
+
+                FE = buscaPos(posFE);
                 maiorF = FE;
 
-                if (FD <= TL2 && vet[FD] > vet[FE])
-                    maiorF = FD;
-                if (vet[maiorF] > vet[pai]) {
-                    aux = vet[maiorF];
-                    vet[maiorF] = vet[pai];
-                    vet[pai] = aux;
+                if (posFD < TL) {
+                    FD = buscaPos(posFD);
+                    if (FD.getInfo() > FE.getInfo()) {
+                        maiorF = FD;
+                    }
+                }
+
+                if (pai.getInfo() < maiorF.getInfo()) {
+                    aux = pai.getInfo();
+                    pai.setInfo(maiorF.getInfo());
+                    maiorF.setInfo(aux);
                 }
             }
 
-            aux = vet[0];
-            vet[0] = vet[TL2];
-            vet[TL2] = aux;
-            TL2--;
+            aux = inicio.getInfo();
+            pai = buscaPos(TL - 1);
+            inicio.setInfo(pai.getInfo());
+            pai.setInfo(aux);
+            TL--;
         }
     }
 
     public void shell() {
-        int dist = 1, i, pos, aux, TL = 10;
-        int[] vet = new int[TL];
+        int dist = 1, i, posAtual, atualInfo, TL = tamanho();
+        No atual, aux;
+
         while (dist < TL)
             dist = dist * 3 + 1;
         dist = dist / 3;
 
         while (dist > 0) {
             for (i = dist; i < TL; i++) {
-                aux = vet[i];
-                pos = i;
+                atual = buscaPos(i);
+                posAtual = i;
 
-                while (pos >= dist && aux < vet[pos - dist]) {
-                    vet[pos] = vet[pos - dist];
-                    pos = pos - dist;
+                atualInfo = atual.getInfo();
+
+                aux = buscaPos(posAtual - dist);
+                while (posAtual >= dist && aux.getInfo() > atualInfo) {
+                    atual.setInfo(aux.getInfo());
+                    posAtual = posAtual - dist;
+                    atual = aux;
+                    aux = buscaPos(posAtual - dist);
                 }
-                vet[pos] = aux;
+
+                atual.setInfo(atualInfo);
             }
 
             dist = dist / 3;
@@ -387,13 +425,4 @@ public class Lista {
         System.out.println("]");
     }
 
-    public int tamanho() {
-        int count = 0;
-        No aux = inicio;
-        while (aux != null) {
-            count++;
-            aux = aux.getProx();
-        }
-        return count;
-    }
 }
