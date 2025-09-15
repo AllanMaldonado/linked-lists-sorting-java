@@ -1,31 +1,40 @@
-# Listas Ligadas e Algoritmos de Ordenação
+# Algoritmos de Ordenação em Listas Ligadas
 
 ## Visão Geral
-Este projeto implementa uma estrutura de dados de lista duplamente ligada com vários algoritmos de ordenação em Java. A implementação inclui operações fundamentais de lista e múltiplas técnicas de ordenação para fins educacionais.
+Este projeto implementa uma **lista duplamente ligada** em Java que contém diversos **algoritmos clássicos de ordenação**.  
+O foco é demonstrar como diferentes técnicas podem ser aplicadas diretamente em listas encadeadas.
 
 ## Arquitetura
-
-### Estrutura de Classes
 - **`No`**: Classe nó representando elementos individuais na lista duplamente ligada
 - **`Lista`**: Classe principal implementando a lista duplamente ligada com algoritmos de ordenação
 - **`Main`**: Classe de teste com testes unitários abrangentes
 
+### 📌 Ordenações Básicas
+- **Bubble Sort (`bolha`)**  
+  Percorre a lista repetidamente, trocando elementos vizinhos fora de ordem.  
+- **Shake Sort (`shake`)**  
+  Variação do Bubble Sort que percorre a lista em ambas as direções.  
 
-### Lista Dinâmica (`Lista.java`)
-Implementa uma lista duplamente ligada com as seguintes operações:
+### 📌 Ordenações por Inserção
+- **Insertion Sort (`insercaoDireta`)**  
+  Insere cada elemento em sua posição correta em uma parte já ordenada.  
+- **Insertion Sort Binário (`insercaoBin`)**  
+  Versão otimizada do Insertion Sort utilizando busca binária para localizar a posição de inserção.  
 
-#### Operações Básicas
-- **`inserirNoInicio(int info)`**: Inserir no início - O(1)
-- **`inserirNoFinal(int info)`**: Inserir no final - O(1)
-- **`remover(int info)`**: Remover por valor - O(n)
-- **`exibir()`**: Exibir todos os elementos - O(n)
+### 📌 Ordenação por Seleção
+- **Selection Sort (`selecaoDireta`)**  
+  Seleciona repetidamente o menor (ou maior) elemento e o coloca na posição correta.  
 
-#### Algoritmos de Busca
-- **`buscaExaustiva(int info)`**: Busca linear - O(n)
-- **`buscaBin(int info)`**: Busca binária em lista ordenada - O(log n)
+### 📌 Ordenações Avançadas
+- **QuickSort sem pivô (`quickSemPivo` / `quickSP`)**  
+  Variação do QuickSort que não utiliza pivô explícito.  
+- **QuickSort com pivô (`quickComPivo`)**  
+  Implementação tradicional do QuickSort, utilizando um pivô para particionar a lista.  
+- **HeapSort (`heap`)**  
+  Constrói uma estrutura de heap a partir da lista e organiza os elementos.  
+- **ShellSort (`shell`)**  
+  Generalização do Insertion Sort que compara elementos distantes e reduz os intervalos gradualmente.  
 
-#### Algoritmos de Ordenação
-- **`insercaoDireta()`**: Ordenação por inserção direta - O(n²)
-- **`selecaoDireta()`**: Ordenação por seleção - O(n²)
-- **`bolha()`**: Ordenação bolha - O(n²)
-- **`shake()`**: Ordenação cocktail shaker - O(n²)
+## Objetivo
+O projeto serve como recurso **educacional**, permitindo estudar e comparar a eficiência de diferentes algoritmos de ordenação aplicados a listas ligadas.  
+
