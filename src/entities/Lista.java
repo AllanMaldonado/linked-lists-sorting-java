@@ -357,22 +357,29 @@ public class Lista {
     }
 
     public void shell() {
-        int dist = 1, i, pos, aux, TL = 10;
-        int[] vet = new int[TL];
+        int dist = 1, i, posAtual, atualInfo, TL = tamanho();
+        No atual, aux;
+
         while (dist < TL)
             dist = dist * 3 + 1;
         dist = dist / 3;
 
         while (dist > 0) {
             for (i = dist; i < TL; i++) {
-                aux = vet[i];
-                pos = i;
+                atual = buscaPos(i);
+                posAtual = i;
 
-                while (pos >= dist && aux < vet[pos - dist]) {
-                    vet[pos] = vet[pos - dist];
-                    pos = pos - dist;
+                atualInfo = atual.getInfo();
+
+                aux = buscaPos(posAtual - dist);
+                while (posAtual >= dist && aux.getInfo() > atualInfo) {
+                    atual.setInfo(aux.getInfo());
+                    posAtual = posAtual - dist;
+                    atual = aux;
+                    aux = buscaPos(posAtual - dist);
                 }
-                vet[pos] = aux;
+
+                atual.setInfo(atualInfo);
             }
 
             dist = dist / 3;
