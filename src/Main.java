@@ -57,8 +57,22 @@ public class Main {
         } else {
             System.out.println("✗ insercaoDireta: FALHOU");
         }
-     
-        
+
+
+
+        //testes merge com vetor
+        //1 implementacao ok
+        lista.populaVetor();
+        lista.exibirVetor();
+        lista.mergeSort1implementacao();
+        lista.exibirVetor();
+
+        //2 implementaco ok
+        lista.populaVetor();
+        lista.exibirVetor();
+        lista.mergeSort2implementacao();
+        lista.exibirVetor();
+
         System.out.println("\n=== RESULTADO ===");
         System.out.println("Passou: " + passou + "/" + total);
     }
