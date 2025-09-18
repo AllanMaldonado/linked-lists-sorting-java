@@ -2,6 +2,23 @@ package entities;
 
 public class Lista {
     No inicio, fim;
+    private final int TL = 8; //tamanho do vetor
+    //apagar o vetor quando passar para lista
+    private int[] vetor = new int[TL];
+
+    public void populaVetor() {
+        vetor = new int[TL];
+        for (int i = 0; i < TL; i++) {
+            vetor[i] = (int) (Math.random() * 100);
+        }
+    }
+
+    public void exibirVetor() {
+        for (int i = 0; i < TL; i++) {
+            System.out.print(vetor[i] + " ");
+        }
+        System.out.println();
+    }
 
     public Lista() {
     }
@@ -425,4 +442,93 @@ public class Lista {
         System.out.println("]");
     }
 
+    //mergesort 1 e 2 implementacao recursivo caso precisar colocar iterativo usar pilhas caso não usar recursivo
+
+    public void mergeSort1implementacao() {
+        int[] vet1 = new int[TL/2];
+        int[] vet2 = new int[TL/2];
+        int sequencia =1;
+        while(sequencia < TL) {
+            particao1(vet1,vet2);
+            fusao1(vet1,vet2,sequencia);
+            sequencia = sequencia *2;
+        }
+    }
+
+    public void particao1 (int[] vet1, int[] vet2) {
+        int tamanho = TL/2;
+
+        for (int i = 0;i<tamanho;i++) {
+            vet1[i] = vetor[i];
+            vet2[i] = vetor[i+tamanho];
+        }
+    }
+
+    public void fusao1 (int[] vet1, int[] vet2, int sequencia) {
+        int i=0,k=0,j=0, aux = sequencia;
+
+        while(k<TL) {
+            while(i<sequencia && j<sequencia)
+                if(vet1[i] < vet2[j])
+                    vetor[k++] = vet1[i++];
+                else
+                    vetor[k++] = vet2[j++];
+
+            while (i<sequencia)
+                vetor[k++] = vet1[i++];
+            while (j<sequencia)
+                vetor[k++] = vet2[j++];
+
+            sequencia = sequencia+aux;
+        }
+    }
+
+    public void mergeSort2implementacao() {
+        int[] aux = new int[TL];
+        mergeSort2(0,TL-1,aux);
+    }
+
+    public void mergeSort2(int esquerda, int direita, int[] aux){
+        if(esquerda < direita) {
+            int meio = (esquerda + direita) / 2;
+            mergeSort2(esquerda, meio, aux);
+            mergeSort2(meio + 1, direita, aux);
+            fusao2(esquerda, meio, meio + 1, direita, aux);
+        }
+    }
+
+    public void fusao2(int ini1, int fim1, int ini2, int fim2, int[] aux){
+        int i = ini1, j = ini2, k = 0;
+
+        while(i<=fim1 && j<=fim2)
+            if(vetor[i] < vetor[j])
+                aux[k++] = vetor[i++];
+            else
+                aux[k++] = vetor[j++];
+
+        while(i<=fim1)
+            aux[k++] = vetor[i++];
+        while(j<=fim2)
+            aux[k++] = vetor[j++];
+
+        for(i = 0; i<k; i++)
+            vetor[ini1+i] = aux[i];
+    }
+
+    //mergers em lista cada implementacao vai ser colocada em 3 funções, uma para o mergesort, uma para a particao e outra para a fusao
+    //as duas implementacaoes estão recursivas não ha problema em usar, caso queira iterativo usar pilhas, uma andara como se fosse arvore binaria (en onder EDII)
+    // a outra guarda os nos
+    public void mergeSort1implementacaoLista() {}
+
+    public void particao1Lista() {}
+
+    public void fusao1Lista() {
+
+    }
+
+    public void mergeSort2implementacaoLista() {}
+
+    public void particao2Lista() {}
+
+    public void fusao2Lista() {}
 }
