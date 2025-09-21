@@ -3,22 +3,14 @@ package entities;
 public class Lista {
     No inicio, fim;
     private final int TL = 8; //tamanho do vetor
-    //apagar o vetor quando passar para lista
-    private int[] vetor = new int[TL];
 
-    public void populaVetor() {
+    /*public void populaVetor() {
         vetor = new int[TL];
         for (int i = 0; i < TL; i++) {
             vetor[i] = (int) (Math.random() * 100);
         }
-    }
+    }*/
 
-    public void exibirVetor() {
-        for (int i = 0; i < TL; i++) {
-            System.out.print(vetor[i] + " ");
-        }
-        System.out.println();
-    }
 
     public Lista() {
     }
@@ -444,7 +436,7 @@ public class Lista {
 
     //mergesort 1 e 2 implementacao recursivo caso precisar colocar iterativo usar pilhas caso não usar recursivo
 
-    public void mergeSort1implementacao() {
+    /*public void mergeSort1implementacao() {
         int[] vet1 = new int[TL/2];
         int[] vet2 = new int[TL/2];
         int sequencia =1;
@@ -513,22 +505,352 @@ public class Lista {
 
         for(i = 0; i<k; i++)
             vetor[ini1+i] = aux[i];
-    }
+    }*/
 
     //mergers em lista cada implementacao vai ser colocada em 3 funções, uma para o mergesort, uma para a particao e outra para a fusao
     //as duas implementacaoes estão recursivas não ha problema em usar, caso queira iterativo usar pilhas, uma andara como se fosse arvore binaria (en onder EDII)
     // a outra guarda os nos
-    public void mergeSort1implementacaoLista() {}
+    public void mergeSort1implementacaoLista() {
+        Lista lista1 = new Lista();
+        Lista lista2 = new Lista();
+        int sequencia = 1;
+        int tamanho = tamanho();
+        int meio = tamanho/2;
 
-    public void particao1Lista() {}
+        for (int i = 0; i < meio; i++) {
+            lista1.inserirNoInicio(0);
+            lista2.inserirNoInicio(0);
+        }
+        System.out.println("Lista 1 e 2 criadas com tamanho: " + meio);
+        lista1.exibirEmLinha();
+        lista2.exibirEmLinha();
+        while(sequencia < tamanho) {
+            particao1Lista(lista1, lista2,tamanho,meio);
+            fusao1Lista(lista1, lista2,sequencia);
+            sequencia *=2;
+        }
+    }
 
-    public void fusao1Lista() {
+    public void particao1Lista(Lista lista1,Lista lista2,int tamanho,int meio) {
+        No aux = inicio;
+        No lista1Aux = lista1.inicio;
+        for (int i = 0; i < meio; i++) {
+            lista1Aux.setInfo(aux.getInfo());
+            lista1Aux = lista1Aux.getProx();
+            aux = aux.getProx();
+        }
+
+        No lista2Aux = lista2.inicio;
+        for (int i = meio; i<tamanho; i++) {
+            lista2Aux.setInfo(aux.getInfo());
+            lista2Aux = lista2Aux.getProx();
+            aux = aux.getProx();
+        }
+    }
+
+    public void exibirListas(Lista lista1, Lista lista2) {
+        System.out.print("Lista 1: ");
+        lista1.exibirEmLinha();
+        System.out.print("Lista 2: ");
+        lista2.exibirEmLinha();
+    }
+
+    public void fusao1Lista(Lista lista1, Lista lista2, int sequencia) {
+        No ListaAux1 = lista1.inicio;
+        No ListaAux2 = lista2.inicio;
+        exibirListas(lista1, lista2);
+        No aux = inicio;
+        int i,j, auxSeq = sequencia;
+
+        for(i = j = 0; aux != null;) {
+            while(i<sequencia && j<sequencia) {
+                if(ListaAux1.getInfo() < ListaAux2.getInfo()) {
+                    aux.setInfo(ListaAux1.getInfo());
+                    ListaAux1 = ListaAux1.getProx();
+                    i++;
+                } else {
+                    aux.setInfo(ListaAux2.getInfo());
+                    ListaAux2 = ListaAux2.getProx();
+                    j++;
+                }
+                aux = aux.getProx();
+            }
+            while(i<sequencia) {
+                aux.setInfo(ListaAux1.getInfo());
+                ListaAux1 = ListaAux1.getProx();
+                i++;
+                aux = aux.getProx();
+            }
+            while(j<sequencia) {
+                aux.setInfo(ListaAux2.getInfo());
+                ListaAux2 = ListaAux2.getProx();
+                j++;
+                aux = aux.getProx();
+            }
+            sequencia += auxSeq;
+        }
 
     }
 
-    public void mergeSort2implementacaoLista() {}
+    private No posicionaDepois (No pos,int posAtual, int posDestino) {
+        while(posAtual < posDestino) {
+            pos = pos.getProx();
+            posAtual++;
+        }
+        return pos;
+    }
 
-    public void particao2Lista() {}
+    private No posicionaAntes (No pos,int posAtual, int posDestino) {
+        while(posAtual > posDestino) {
+            pos = pos.getAnt();
+            posAtual--;
+        }
+        return pos;
+    }
 
-    public void fusao2Lista() {}
+    public void mergeSort2Lista(No lista, No esquerda, No direita, int posEsquerda, int posDireita) {
+        if(posEsquerda < posDireita) {
+            int meioPos = (posEsquerda + posDireita) / 2;
+            No meio = posicionaDepois(esquerda, posEsquerda, meioPos);
+            mergeSort2Lista(lista, esquerda, meio, posEsquerda, meioPos);
+            mergeSort2Lista(lista, meio.getProx(), direita, meioPos + 1, posDireita);
+            fusao2Lista(lista,esquerda,meio,posEsquerda,meioPos,meio.getProx(),direita,meioPos+1,posDireita);
+        }
+    }
+    //chamar ela para merge 2
+    public void mergeSort2implementacaoLista() {
+        int tamanho = tamanho();
+        No ListaAux = new No(), aux = ListaAux;
+
+        for(int i = 1; i<tamanho; i++) {
+            aux.setProx(new No());
+            aux.getProx().setAnt(aux);
+            aux = aux.getProx();
+        }
+        mergeSort2Lista(ListaAux, inicio, fim,0,tamanho-1);
+    }
+
+    public void fusao2Lista(No lista, No inicio1, No fim1, int pos_inicio1, int pos_fim1, No inicio2, No fim2, int pos_inicio2, int pos_fim2) {
+        No aux = lista;
+        No NoInicio1 = inicio1;
+        No NoInicio2 = inicio2;
+        int i = pos_inicio1, j = pos_inicio2, k = 0;
+
+        while(i<=pos_fim1 && j<=pos_fim2) {
+            if(NoInicio1.getInfo() < NoInicio2.getInfo()) {
+                aux.setInfo(NoInicio1.getInfo());
+                NoInicio1 = NoInicio1.getProx();
+                i++;
+            } else {
+                aux.setInfo(NoInicio2.getInfo());
+                NoInicio2= NoInicio2.getProx();
+                j++;
+            }
+            aux = aux.getProx();
+            k++;
+        }
+
+        while(i<=pos_fim1) {
+            aux.setInfo(NoInicio1.getInfo());
+            NoInicio1 = NoInicio1.getProx();
+            aux = aux.getProx();
+            i++;
+            k++;
+        }
+        while(j<=pos_fim2) {
+            aux.setInfo(NoInicio2.getInfo());
+            NoInicio2 = NoInicio2.getProx();
+            aux = aux.getProx();
+            j++;
+            k++;
+        }
+
+        No no = posicionaDepois(inicio,0,pos_inicio1);
+        aux = lista;
+        for(i = 0; i<k; i++) {
+            no.setInfo(aux.getInfo());
+            no = no.getProx();
+            aux = aux.getProx();
+        }
+    }
+    public int maiorValorDaLista(){
+        int maximo = inicio.getInfo();
+        No aux = inicio.getProx();
+        while (aux != null){
+            if(aux.getInfo() > maximo)
+                maximo = aux.getInfo();
+            aux = aux.getProx();
+        }
+        return maximo;
+    }
+
+    private No posicionaNo(No no,int pos_atual, int pos_destino){
+        if(pos_destino > pos_atual) {
+            while(pos_atual != pos_destino) {
+                no = no.getProx();
+                pos_atual++;
+            }
+            return no;
+        }
+        while(pos_atual != pos_destino) {
+            no = no.getAnt();
+            pos_atual--;
+        }
+        return no;
+    }
+
+    public void countingSort() {
+        int maximo = maiorValorDaLista(),i;
+        No aux;
+
+        int[] vetorContagem = new int[maximo + 1];
+
+        for(aux = inicio; aux != null; aux = aux.getProx())
+            vetorContagem[aux.getInfo()]++;
+
+        for(i = 1; i < vetorContagem.length; i++)
+            vetorContagem[i] += vetorContagem[i - 1];
+
+        No ordenado = new No();
+        int tamanho = tamanho();
+        No lista = ordenado;
+        for(i = 1; i < tamanho; i++) {
+            lista.setProx(new No());
+            lista.getProx().setAnt(lista);
+            lista = lista.getProx();
+        }
+
+        aux = fim;
+        fim = lista;
+        inicio = ordenado;
+        for(;aux != null;aux = aux.getAnt()){
+            lista = posicionaNo(lista,i,vetorContagem[aux.getInfo()]);
+            i = vetorContagem[aux.getInfo()];
+            lista.setInfo(aux.getInfo());
+            vetorContagem[aux.getInfo()]--;
+        }
+    }
+
+    public int menorValorDaLista() {
+        int minimo = inicio.getInfo();
+        No aux = inicio.getProx();
+        while (aux != null) {
+            if (aux.getInfo() < minimo)
+                minimo = aux.getInfo();
+            aux = aux.getProx();
+        }
+        return minimo;
+    }
+
+    public void bucketSort() {
+        int maximo = maiorValorDaLista();
+        int minimo = menorValorDaLista();
+        int bucketCount = (int) Math.sqrt(maximo - minimo + 1);
+        int intervalo = (maximo - minimo + 1) / bucketCount;
+        int i,pos;
+
+        Lista[] bucket = new Lista[bucketCount+1];
+        No aux;
+
+        for(i = 0; i < bucket.length; i++)
+            bucket[i] = new Lista();
+
+        for(aux = inicio; aux != null; aux = aux.getProx()) {
+            pos = (aux.getInfo() - minimo) / intervalo;
+            bucket[pos].inserirNoInicio(aux.getInfo());
+        }
+
+        for(i = 0; i < bucket.length; i++)
+            bucket[i].insercaoDireta();
+
+        No lista = inicio;
+        for (i = 0; i < bucket.length; i++) {
+            for(aux = bucket[i].inicio; aux != null; aux = aux.getProx()) {
+                lista.setInfo(aux.getInfo());
+                lista = lista.getProx();
+            }
+        }
+    }
+
+    public void radixSort() {
+        int maximo = maiorValorDaLista();
+        int i, tamanho = tamanho();
+        Lista lista = new Lista();
+        No aux,Nolista;
+
+        for(i = 0; i < tamanho; i++)
+            lista.inserirNoInicio(0);
+        for(int digito = 1; digito <= maximo; digito *= 10) {
+            int[] contagem = new int[10];
+
+            for(aux = inicio; aux != null; aux = aux.getProx())
+                contagem[(aux.getInfo() / digito) % 10]++;
+
+            for(i = 1; i < 10; i++)
+                contagem[i] += contagem[i - 1];
+
+            Nolista = lista.inicio;
+            i=0;
+            for(aux = fim; aux != null; aux = aux.getAnt()) {
+                int pos = (aux.getInfo() / digito) % 10;
+                Nolista = posicionaNo(Nolista,i,--contagem[pos]);
+                i = contagem[pos];
+                Nolista.setInfo(aux.getInfo());
+            }
+
+            Nolista = inicio;
+            inicio = lista.inicio;
+            lista.inicio = Nolista;
+
+            Nolista = fim;
+            fim = lista.fim;
+            lista.fim = Nolista;
+        }
+    }
+    public void combSort() {
+        int tamanho = tamanho();
+        int intervalo = (int) (tamanho/1.3);
+        int i,info;
+        No aux,aux2;
+        boolean troca = true;
+
+        while(intervalo > 1 || troca) {
+            troca = false;
+            i = 0;
+            aux = inicio;
+            aux2 = posicionaDepois(aux,0,intervalo);
+            while(i + intervalo < tamanho) {
+                if(aux.getInfo() > aux2.getInfo()) {
+                    info = aux.getInfo();
+                    aux.setInfo(aux2.getInfo());
+                    aux2.setInfo(info);
+                    troca = true;
+                }
+                i++;
+                aux = aux.getProx();
+                aux2 = aux2.getProx();
+            }
+            if(intervalo > 1) {
+                troca = true;
+                intervalo = (int) (intervalo / 1.3);
+            }
+        }
+    }
+
+    public void gnomeSort() {
+        No aux = inicio;
+
+        while(aux != null) {
+            if(aux == inicio)
+                aux = aux.getProx();
+            if(aux.getInfo() >= aux.getAnt().getInfo())
+                aux = aux.getProx();
+            else {
+                int info = aux.getInfo();
+                aux.setInfo(aux.getAnt().getInfo());
+                aux.getAnt().setInfo(info);
+                aux = aux.getAnt();
+            }
+        }
+    }
 }
