@@ -853,4 +853,59 @@ public class Lista {
             }
         }
     }
+
+
+    private void insersacaoDiretaTimSort(No inicio, No fim) {
+        No posicaoInicial, ppos;
+        int aux;
+
+        for(posicaoInicial = inicio.getProx(); posicaoInicial != fim.getProx(); posicaoInicial = posicaoInicial.getProx()) {
+            ppos = posicaoInicial;
+            aux = posicaoInicial.getInfo();
+
+            while(ppos != inicio && aux < ppos.getAnt().getInfo()) {
+                ppos.setInfo(ppos.getAnt().getInfo());
+                ppos = ppos.getAnt();
+            }
+            ppos.setInfo(aux);
+        }
+    }
+
+    public void timSort() {
+        int tl = tamanho(), run = 32, esquerda, meio, direita;
+        No ini = this.inicio, noEsquerda, noMeio;
+        No fim = posicionaDepois(inicio,0,Math.min(run, tl-1));
+
+        for(int i = 0; i < tl;) {
+            insersacaoDiretaTimSort(ini,fim);
+            i+=run;
+            if(i<tl) {
+                ini = fim;
+                fim = posicionaDepois(ini, i + run, Math.min(i + run, tl - 1));
+            }
+        }
+
+        No lista = new No(), aux = lista;
+        for(int i = 1; i<tl; i++) {
+            aux.setProx(new No());
+            aux.getProx().setAnt(aux);
+            aux = aux.getProx();
+        }
+
+
+        for(int tam = run; tam < tl; tam = 2*tam) {
+            for(esquerda = 0; esquerda < tl; esquerda += 2*tam) {
+                meio = esquerda + tam - 1;
+                direita = Math.min((esquerda + 2*tam - 1), (tl - 1));
+
+                if(meio < direita) {
+                    noEsquerda = posicionaDepois(inicio,0,esquerda);
+                    noMeio = posicionaDepois(noEsquerda,esquerda,meio);
+                    No noDireita = posicionaDepois(inicio,0,direita);
+                    fusao2Lista(lista, noEsquerda, noMeio, esquerda, meio, noMeio.getProx(), noDireita, meio + 1, direita);
+                }
+            }
+        }
+    }
+
 }
