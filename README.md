@@ -1,40 +1,95 @@
 # Algoritmos de Ordenação em Listas Ligadas
 
-## Visão Geral
-Este projeto implementa uma **lista duplamente ligada** em Java que contém diversos **algoritmos clássicos de ordenação**.  
-O foco é demonstrar como diferentes técnicas podem ser aplicadas diretamente em listas encadeadas.
+*Implementação em Java de uma lista duplamente ligada com múltiplos algoritmos de ordenação clássicos e modernos.*
 
-## Arquitetura
-- **`No`**: Classe nó representando elementos individuais na lista duplamente ligada
-- **`Lista`**: Classe principal implementando a lista duplamente ligada com algoritmos de ordenação
-- **`Main`**: Classe de teste com testes unitários abrangentes
+![Badge Java](https://img.shields.io/badge/Java-8%2B-blue)
+![Badge Status](https://img.shields.io/badge/Status-Concluído-green) 
 
-### 📌 Ordenações Básicas
-- **Bubble Sort (`bolha`)**  
-  Percorre a lista repetidamente, trocando elementos vizinhos fora de ordem.  
-- **Shake Sort (`shake`)**  
-  Variação do Bubble Sort que percorre a lista em ambas as direções.  
+---
 
-### 📌 Ordenações por Inserção
-- **Insertion Sort (`insercaoDireta`)**  
-  Insere cada elemento em sua posição correta em uma parte já ordenada.  
-- **Insertion Sort Binário (`insercaoBin`)**  
-  Versão otimizada do Insertion Sort utilizando busca binária para localizar a posição de inserção.  
+## 📋 Visão Geral
 
-### 📌 Ordenação por Seleção
-- **Selection Sort (`selecaoDireta`)**  
-  Seleciona repetidamente o menor (ou maior) elemento e o coloca na posição correta.  
+Este projeto implementa uma **lista duplamente ligada** em Java, explorando a aplicação de diferentes **algoritmos de ordenação** diretamente na estrutura encadeada.
 
-### 📌 Ordenações Avançadas
-- **QuickSort sem pivô (`quickSemPivo` / `quickSP`)**  
-  Variação do QuickSort que não utiliza pivô explícito.  
-- **QuickSort com pivô (`quickComPivo`)**  
-  Implementação tradicional do QuickSort, utilizando um pivô para particionar a lista.  
-- **HeapSort (`heap`)**  
-  Constrói uma estrutura de heap a partir da lista e organiza os elementos.  
-- **ShellSort (`shell`)**  
-  Generalização do Insertion Sort que compara elementos distantes e reduz os intervalos gradualmente.  
+O objetivo é servir como recurso **educacional**, permitindo comparar eficiência, complexidade e comportamento de algoritmos em um contexto fora dos arrays tradicionais.
 
-## Objetivo
-O projeto serve como recurso **educacional**, permitindo estudar e comparar a eficiência de diferentes algoritmos de ordenação aplicados a listas ligadas.  
+---
 
+## 🏗️ Arquitetura do Projeto
+
+* **`No`** → Classe que representa um nó da lista (valor + ponteiros anterior/próximo).
+* **`Lista`** → Classe principal com as operações da lista e implementação dos algoritmos de ordenação.
+* **`Main`** → Classe de testes para execução e validação.
+
+---
+
+## 📚 Algoritmos Implementados
+ 
+* **Selection Sort (`selecaoDireta`)** 
+* **Insertion Sort (`insercaoDireta`)**  
+* **Insertion Sort Binário (`insercaoBin`)**  
+* **Bubble Sort (`bolha`)**  
+* **Heap Sort (`heap`)** 
+* **Shake Sort (`shake`)** 
+* **Shell Sort (`shell`)** 
+* **Quick Sort sem pivô (`quickSemPivo`)** 
+* **Quick Sort com pivô (`quickComPivo`)** 
+* **Merge Sort – 1ª implementação (`mergeSort1implementacaoLista`)** 
+* **Merge Sort – 2ª implementação (`mergeSort2implementacaoLista`)** 
+* **Counting Sort (`countingSort`)** 
+* **Bucket Sort (`bucketSort`)** 
+* **Radix Sort (`radixSort`)** 
+* **Comb Sort (`combSort`)** 
+* **Gnome Sort (`gnomeSort`)**  
+* **TimSort (`timSort`)**  
+
+---
+
+## 🚀 Como Executar
+
+### ✅ Pré-requisitos
+
+* Java JDK 8 ou superior
+* IDE Java (IntelliJ, Eclipse, NetBeans) **ou** compilação via terminal
+
+### 💻 Execução via terminal
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/linked-lists-sorting-java.git
+cd linked-lists-sorting-java-main
+
+# Compile
+javac -d bin src/entities/*.java src/Main.java
+
+# Execute
+java -cp bin Main
+```
+
+---
+
+## 🖥️ Exemplo de Saída
+
+```text
+Lista original:  42 → 15 → 7 → 23 → 89  
+
+Ordenando com QuickSort...
+Lista ordenada:  7 → 15 → 23 → 42 → 89  
+
+Ordenando com Counting Sort...
+Lista ordenada:  7 → 15 → 23 → 42 → 89  
+
+Ordenando com TimSort...
+Lista ordenada:  7 → 15 → 23 → 42 → 89
+```
+
+--- 
+
+## 👥 Autores
+
+Este projeto foi desenvolvido como parte da disciplina **Pesquisa e Ordenação**.
+
+* Allan Maldonado
+* Daniel Andreassi
+
+---    
