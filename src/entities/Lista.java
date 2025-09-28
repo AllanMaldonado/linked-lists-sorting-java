@@ -2,15 +2,6 @@ package entities;
 
 public class Lista {
     No inicio, fim;
-    private final int TL = 8; //tamanho do vetor
-
-    /*public void populaVetor() {
-        vetor = new int[TL];
-        for (int i = 0; i < TL; i++) {
-            vetor[i] = (int) (Math.random() * 100);
-        }
-    }*/
-
 
     public Lista() {
     }
@@ -45,13 +36,6 @@ public class Lista {
 
     public No remover(int info) {
         No aux = buscaExaustiva(info);
-
-        /*
-         * 1) A caixa excluir esta em Inicio = fim ---> coloca null em ambos
-         * 2) Quer excluir o inicio, onde tem prox ---> inicio = prox; prox ant = null;
-         * 3) Quer excluir o fim, onde tem ant ---> im = ant; ant prox = null;
-         * 4) Quer excluir no meio,ant prox = prox; prox ant = ant;
-         */
 
         if (aux != null) {
             if (inicio == fim) {
@@ -119,12 +103,11 @@ public class Lista {
                 auxIni = meio.getProx();
         }
 
-        // Retorna o nó onde o valor deve ser inserido
         if (auxIni != null && auxIni.getInfo() >= info)
             return auxIni;
         if (auxFim != null && auxFim.getInfo() >= info)
             return auxFim;
-        return null; // insere no final
+        return null; 
     }
 
     public void insercaoBin() {
@@ -138,13 +121,11 @@ public class Lista {
             piProx = pi.getProx();
             aux = pi.getInfo();
 
-            // Busca apenas na sublista ordenada (do início até pi.getAnt())
             pos = inicio;
             while (pos != pi && pos.getInfo() < aux) {
                 pos = pos.getProx();
             }
 
-            // Desloca os elementos para abrir espaço
             pj = pi;
             while (pj != pos) {
                 pj.setInfo(pj.getAnt().getInfo());
@@ -395,7 +376,6 @@ public class Lista {
         }
     }
 
-    // Métodos auxiliares para testes
     public void limpar() {
         inicio = fim = null;
     }
@@ -600,14 +580,6 @@ public class Lista {
         return pos;
     }
 
-    private No posicionaAntes (No pos,int posAtual, int posDestino) {
-        while(posAtual > posDestino) {
-            pos = pos.getAnt();
-            posAtual--;
-        }
-        return pos;
-    }
-
     public void mergeSort2Lista(No lista, No esquerda, No direita, int posEsquerda, int posDireita) {
         if(posEsquerda < posDireita) {
             int meioPos = (posEsquerda + posDireita) / 2;
@@ -617,7 +589,7 @@ public class Lista {
             fusao2Lista(lista,esquerda,meio,posEsquerda,meioPos,meio.getProx(),direita,meioPos+1,posDireita);
         }
     }
-    //chamar ela para merge 2
+
     public void mergeSort2implementacaoLista() {
         int tamanho = tamanho();
         No ListaAux = new No(), aux = ListaAux;
