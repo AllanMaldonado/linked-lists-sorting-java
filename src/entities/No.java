@@ -1,10 +1,8 @@
 package entities;
 
 public class No {
-    int info;
-    No ant, prox;
-
-    /* CONSTRUCTORS */
+    private int info;
+    private No ant, prox;
 
     public No() {}
 
@@ -24,8 +22,6 @@ public class No {
         this.ant = ant;
         this.prox = prox;
     }
-
-    /* GETTERS & SETTERS */
 
     public int getInfo() {
         return info;
@@ -50,6 +46,5 @@ public class No {
     public void setProx(No prox) {
         this.prox = prox;
     }
-
 
 }
